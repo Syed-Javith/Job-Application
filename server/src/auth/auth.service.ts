@@ -1,14 +1,14 @@
-import { Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotAcceptableException, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from 'schema/user.schema';
-import bcrypt from 'bcrypt'
+import * as bcrypt from 'bcrypt';
 import { LoginUser, RegisterUser } from 'src/dto/create-user.dto';
+import { IsUser } from 'src/interfaces/user.interface';
 
 @Injectable()
 export class AuthService {
-    constructor(private jwtService: JwtService, @InjectModel('user') private readonly userModel: Model<User>) { }
+    constructor(private jwtService: JwtService , @InjectModel('User') private userModel : Model<IsUser>) { }
     async login(data : LoginUser) {
         const { email , password } = data
         const existingUser = await this.userModel.findOne({ email })
@@ -24,14 +24,20 @@ export class AuthService {
 
     async register(data : RegisterUser) {
         const { email, password, name, phoneNumber, gender, yearsOfExp , skills , jobTitle , workHistory } = data
+        Logger.log(data.password)
+        Logger.log(password)
+        if (!password) {
+            throw new Error('Password is missing');
+        }
         const existingUser = await this.userModel.findOne({ email })
         if (existingUser) {
             throw new Error("User already exist")
         }
-        const hash = await bcrypt.hash(password, 10);
-        const user = this.userModel.create({
+        const hashPass = await bcrypt.hash(password,10);
+        
+        const user = await this.userModel.create({
             email,
-            password: hash,
+            password: hashPass,
             name,
             phoneNumber,
             gender,

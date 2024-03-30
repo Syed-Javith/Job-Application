@@ -1,4 +1,4 @@
-import { IsAlpha, IsDate, IsEmail, IsNotEmpty, IsNumber, IsString, IsStrongPassword, Max, MaxLength } from "class-validator";
+import { IsAlpha, IsBase32, IsBoolean, IsDate, IsEmail, IsNotEmpty, IsNumber, IsString, IsStrongPassword, Max, MaxLength } from "class-validator";
 
 export class LoginUser{
     @IsEmail()
@@ -41,9 +41,15 @@ export class RegisterUser extends LoginUser{
     @Max(100)
     yearsOfExp : number
 
+    @IsBoolean()
+    isJobSeeker : boolean;
+
     skills : String[] | null 
 
     jobTitle : string | null
 
     workHistory : WorkHistory[]
+
+    @IsBase32()
+    resume: Buffer;
 }

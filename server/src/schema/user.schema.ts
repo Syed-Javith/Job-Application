@@ -14,6 +14,9 @@ export class User {
    @Prop({required:true})
    gender: string;
    
+   @Prop({required:true,default:true})
+   isJobSeeker : boolean
+
    @Prop()
    skills : [string];
 
@@ -31,5 +34,11 @@ export class User {
 
     @Prop({default:null})
     workHistory : [WorkExp]
+
+    @Prop({ required: true, type: Buffer })
+    resume: Buffer;
+
+    @Prop({default:null})
+    companyCode : string
 }
 export const UserSchema = SchemaFactory.createForClass(User);
