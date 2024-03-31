@@ -20,4 +20,21 @@ export class JobPostService {
     async updateJobPostByEmployer(id:string , data : EditJobPostDto){
         return await this.jobPostModel.findByIdAndUpdate(id,data,{ new : true })
     }
+
+    async getJobById(id: string){
+        return await this.jobPostModel.findById(id);
+    }
+
+    async getJobs(search : string = null){
+        if(search){
+            const searchRegex = new RegExp(search, 'i');
+            return await this.jobPostModel.find({ $or : [
+                { location : searchRegex },
+                { companyName : searchRegex },
+                { companyCode : searchRegex },
+                { title : searchRegex }
+            ]},{}, { limit : 20 } )
+        }
+        return await this.jobPostModel.find({},{},{limit:20});
+    }
 }

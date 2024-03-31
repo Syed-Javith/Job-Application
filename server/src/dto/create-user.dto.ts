@@ -1,3 +1,4 @@
+import { Optional } from "@nestjs/common";
 import { IsAlpha, IsBase32, IsBoolean, IsDate, IsEmail, IsNotEmpty, IsNumber, IsString, IsStrongPassword, Max, MaxLength } from "class-validator";
 
 export class LoginUser{
@@ -41,6 +42,10 @@ export class RegisterUser extends LoginUser{
     @Max(100)
     yearsOfExp : number
 
+    @IsString()
+    @IsAlpha()
+    location : string
+
     @IsBoolean()
     isJobSeeker : boolean;
 
@@ -51,5 +56,6 @@ export class RegisterUser extends LoginUser{
     workHistory : WorkHistory[]
 
     @IsBase32()
+    @Optional()
     resume: Buffer;
 }

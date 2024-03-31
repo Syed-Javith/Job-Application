@@ -13,6 +13,9 @@ export class User {
    
    @Prop({required:true})
    gender: string;
+
+   @Prop({required:true})
+   location : string
    
    @Prop({required:true,default:true})
    isJobSeeker : boolean
@@ -35,7 +38,7 @@ export class User {
     @Prop({default:null})
     workHistory : [WorkExp]
 
-    @Prop({ required: true, type: Buffer })
+    @Prop({type: Buffer,default:null })
     resume: Buffer;
 
     @Prop({default:null})
